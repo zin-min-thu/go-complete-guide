@@ -45,7 +45,7 @@ func main() {
 // 	return *age - 18
 // }
 
-// deference pointer
+// dereference pointer
 func editAgeToAdultYears(age *int) {
 	*age = *age - 18
 }
