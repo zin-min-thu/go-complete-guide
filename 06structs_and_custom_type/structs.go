@@ -1,48 +1,17 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"time"
+
+	"github.com/zin-min-thu/structandcustomtypes/user"
 )
-
-type user struct {
-	firstName string
-	lastName  string
-	birthDate string
-	createdAt time.Time
-}
-
-// ... using receiver methods with struct
-func (u *user) outputUserDetails() {
-	fmt.Printf("First Name: %v\nLast Name: %v\nDOB: %v\n", u.firstName, u.lastName, u.birthDate)
-}
-
-// ... mutation methods with pointer receiver
-func (u *user) clearUserName() {
-	u.firstName = ""
-	u.lastName = ""
-}
-
-// ... constructor function and validation
-func newUser(firstName, lastName, birthdate string) (*user, error) {
-	if firstName == "" || lastName == "" || birthdate == "" {
-		return nil, errors.New("First name, last name and birthdate are required.")
-	}
-	return &user{
-		firstName: firstName,
-		lastName:  lastName,
-		birthDate: birthdate,
-		createdAt: time.Now(),
-	}, nil
-}
 
 func main() {
 	userFirstName := getUserData("Enter first name: ")
 	userLastName := getUserData("Enter last name: ")
 	userBirthdate := getUserData("Enter birthdate (MM/DD/YYY): ")
 
-	var appUser *user
+	var appUser *user.User
 
 	// appUser = user{
 	// 	firstName: userFirstName,
@@ -51,16 +20,16 @@ func main() {
 	// 	createdAt: time.Now(),
 	// }
 
-	appUser, err := newUser(userFirstName, userLastName, userBirthdate)
+	appUser, err := user.New(userFirstName, userLastName, userBirthdate)
 
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	appUser.outputUserDetails()
-	appUser.clearUserName()
-	appUser.outputUserDetails()
+	appUser.OutputUserDetails()
+	appUser.ClearUserName()
+	appUser.OutputUserDetails()
 
 	// sort form must be same order with user struct
 	// appUser = user{
