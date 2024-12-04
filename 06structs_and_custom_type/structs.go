@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"time"
 )
@@ -12,15 +13,28 @@ type user struct {
 	createdAt time.Time
 }
 
-// using receiver methods with struct
+// ... using receiver methods with struct
 func (u *user) outputUserDetails() {
 	fmt.Printf("First Name: %v\nLast Name: %v\nDOB: %v\n", u.firstName, u.lastName, u.birthDate)
 }
 
-// mutation methods with pointer receiver
+// ... mutation methods with pointer receiver
 func (u *user) clearUserName() {
 	u.firstName = ""
 	u.lastName = ""
+}
+
+// ... constructor function and validation
+func newUser(firstName, lastName, birthdate string) (*user, error) {
+	if firstName == "" || lastName == "" || birthdate == "" {
+		return nil, errors.New("First name, last name and birthdate are required.")
+	}
+	return &user{
+		firstName: firstName,
+		lastName:  lastName,
+		birthDate: birthdate,
+		createdAt: time.Now(),
+	}, nil
 }
 
 func main() {
@@ -28,13 +42,20 @@ func main() {
 	userLastName := getUserData("Enter last name: ")
 	userBirthdate := getUserData("Enter birthdate (MM/DD/YYY): ")
 
-	appUser := user{}
+	var appUser *user
 
-	appUser = user{
-		firstName: userFirstName,
-		lastName:  userLastName,
-		birthDate: userBirthdate,
-		createdAt: time.Now(),
+	// appUser = user{
+	// 	firstName: userFirstName,
+	// 	lastName:  userLastName,
+	// 	birthDate: userBirthdate,
+	// 	createdAt: time.Now(),
+	// }
+
+	appUser, err := newUser(userFirstName, userLastName, userBirthdate)
+
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
 	appUser.outputUserDetails()
@@ -62,6 +83,8 @@ func main() {
 func getUserData(promptText string) string {
 	fmt.Print(promptText)
 	var value string
-	fmt.Scan(&value)
+	// fmt.Scan(&value*user)
+	// Scanln to cover when we press enter empty string
+	fmt.Scanln(&value)
 	return value
 }
