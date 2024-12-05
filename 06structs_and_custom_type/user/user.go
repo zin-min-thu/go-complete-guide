@@ -17,6 +17,14 @@ type User struct {
 	createdAt time.Time
 }
 
+type Admin struct {
+	email    string
+	password string
+	// if we use user with assign User, it means not export type can't use from other package
+	// user     User
+	User // embedding anonymous User struct can direct access from Admin struct
+}
+
 // ... using receiver methods with struct
 func (u *User) OutputUserDetails() {
 	fmt.Printf("First Name: %v\nLast Name: %v\nDOB: %v\n", u.firstName, u.lastName, u.birthDate)
@@ -26,6 +34,19 @@ func (u *User) OutputUserDetails() {
 func (u *User) ClearUserName() {
 	u.firstName = ""
 	u.lastName = ""
+}
+
+func NewAdmin(email, password string) Admin {
+	return Admin{
+		email:    email,
+		password: password,
+		User: User{
+			firstName: "Admin",
+			lastName:  "One",
+			birthDate: "---",
+			createdAt: time.Now(),
+		},
+	}
 }
 
 // ... constructor function and validation

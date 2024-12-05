@@ -27,6 +27,15 @@ func main() {
 		return
 	}
 
+	admin := user.NewAdmin("admin@gmail.com", "123")
+	// admin.User.OutputUserDetails()
+	// admin.User.ClearUserName()
+	// admin.User.OutputUserDetails()
+	// direct accept cuz using anonymous struct User type
+	admin.OutputUserDetails()
+	admin.ClearUserName()
+	admin.OutputUserDetails()
+
 	appUser.OutputUserDetails()
 	appUser.ClearUserName()
 	appUser.OutputUserDetails()
