@@ -30,15 +30,17 @@ type outputtable interface {
 
 func main() {
 
-	// printSomething(1)
-	// printSomething(1.2)
-	// printSomething("Test string")
+	printSomething(1)
+	printSomething(1.2)
+	printSomething("Test string")
 
 	title, content := getNoteDate()
 
 	todoText := getTodoData()
 
 	todo, err := todo.New(todoText)
+
+	printSomething(todo)
 
 	if err != nil {
 		fmt.Println(err)
@@ -117,6 +119,31 @@ func getUserInput(prompt string) string {
 }
 
 // interface type can access any kind of type value(int,float,string)
-// func printSomething(value interface{}) {
-// 	fmt.Println(value)
-// }
+func printSomething(value interface{}) {
+
+	intVal, ok := value.(int)
+	if ok {
+		fmt.Println("Integer: ", intVal)
+	}
+
+	floatVal, ok := value.(float64)
+	if ok {
+		fmt.Println("Float: ", floatVal)
+	}
+
+	stringVal, ok := value.(string)
+	if ok {
+		fmt.Println("String: ", stringVal)
+	}
+
+	// switch value.(type) {
+	// case int:
+	// 	fmt.Println("Integer: ", value)
+	// case float64:
+	// 	fmt.Println("Float: ", value)
+	// case string:
+	// 	fmt.Println("String: ", value)
+	// }
+
+	// fmt.Println(value)
+}
