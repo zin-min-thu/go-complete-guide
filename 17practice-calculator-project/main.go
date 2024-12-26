@@ -21,7 +21,7 @@ func main() {
 		doneChans[index] = make(chan bool)
 		errorChans[index] = make(chan error)
 
-		fm := filemanager.New("pricesss.txt", fmt.Sprintf("result_%.0f.json", taxRate*100))
+		fm := filemanager.New("prices.txt", fmt.Sprintf("result_%.0f.json", taxRate*100))
 
 		// cmdm := cmdmanager.New()
 
@@ -35,8 +35,15 @@ func main() {
 		// }
 	}
 
-	for _, doneChan := range doneChans {
-		<-doneChan
+	for index := range taxRates {
+		select {
+		case err := <-errorChans[index]:
+			if err != nil {
+				fmt.Println(err)
+			}
+		case <-doneChans[index]:
+			fmt.Println("Done!")
+		}
 	}
 
 }

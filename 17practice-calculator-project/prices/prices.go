@@ -35,12 +35,12 @@ func (job *TaxIncludedPriceJob) LoadData() error {
 
 }
 
-func (job TaxIncludedPriceJob) Process(doneChan chan bool, errChan chan error) {
+func (job TaxIncludedPriceJob) Process(doneChan chan bool, errorChan chan error) {
 
 	err := job.LoadData()
 
 	if err != nil {
-		errChan <- err
+		errorChan <- err
 		return
 	}
 
