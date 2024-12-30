@@ -38,9 +38,13 @@ func createEvent(context *gin.Context) {
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse data."})
+		return
 	}
 
 	event.ID = 1
 	event.UserID = 1
-	context.JSON(http.StatusCreated, gin.H{"message": "Created", "event": event})
+
+	event.Save()
+
+	context.JSON(http.StatusCreated, gin.H{"message": "Event Created", "event": event})
 }
