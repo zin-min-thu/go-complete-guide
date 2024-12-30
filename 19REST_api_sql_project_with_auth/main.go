@@ -4,10 +4,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/zin-min-thu/apisqlprojectwithauth/db"
 	"github.com/zin-min-thu/apisqlprojectwithauth/models"
 )
 
 func main() {
+	db.InitDB()
+
 	server := gin.Default()
 
 	server.LoadHTMLGlob("templates/*")
