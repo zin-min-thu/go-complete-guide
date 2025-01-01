@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zin-min-thu/apisqlprojectwithauth/db"
@@ -19,6 +20,7 @@ func main() {
 
 	server.GET("/events", getEvents)
 	server.POST("/events", createEvent)
+	server.GET("/events/:id", getEvent)
 
 	server.Run(":8080") // localhost:8080
 }
@@ -39,6 +41,26 @@ func getEvents(context *gin.Context) {
 
 	// context.JSON(http.StatusOK, gin.H{"message": "Welcome API", "status": true})
 	context.JSON(http.StatusOK, events)
+}
+
+func getEvent(context *gin.Context) {
+
+	eventId, err := strconv.ParseInt(context.Param("id"), 10, 64)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not find event with this id."})
+		return
+	}
+
+	event, err := models.GetEventByID(eventId)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not find event."})
+		return
+	}
+
+	context.JSON(http.StatusOK, event)
+
 }
 
 func createEvent(context *gin.Context) {
