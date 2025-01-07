@@ -1,6 +1,6 @@
 POST http://localhost:8080/signup
 
 {
-    "email" :"test@gmail.com",
+    "email" :"test2@gmail.com",
     "password": "test"
 }
