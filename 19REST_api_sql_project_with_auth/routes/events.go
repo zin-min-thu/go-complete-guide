@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/zin-min-thu/apisqlprojectwithauth/models"
-	"github.com/zin-min-thu/apisqlprojectwithauth/utils"
 )
 
 func getEvents(context *gin.Context) {
@@ -43,29 +42,29 @@ func getEvent(context *gin.Context) {
 
 func createEvent(context *gin.Context) {
 
-	token := context.Request.Header.Get("Authorization")
+	// token := context.Request.Header.Get("Authorization")
 
-	if token == "" {
-		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized"})
-		return
-	}
+	// if token == "" {
+	// 	context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized"})
+	// 	return
+	// }
 
-	userId, err := utils.VerifyToken(token)
+	// userId, err := utils.VerifyToken(token)
 
-	if err != nil {
-		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized."})
-		return
-	}
+	// if err != nil {
+	// 	context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized."})
+	// 	return
+	// }
 
 	var event models.Event
-	err = context.ShouldBindJSON(&event)
+	err := context.ShouldBindJSON(&event)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse data."})
 		return
 	}
 
-	// event.ID = 1
+	userId := context.GetInt64("userId")
 	event.UserID = userId
 
 	err = event.Save()
